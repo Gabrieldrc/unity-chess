@@ -21,6 +21,16 @@ namespace Game.Core
             }
         }
 
+        public int Rows
+        {
+            get => _board.GetLength(0);
+        }
+        
+        public int Columns
+        {
+            get => _board.GetLength(1);
+        }
+
         public void AddPiece(Piece piece)
         {
             var piecePosition = piece.Position;
@@ -28,7 +38,7 @@ namespace Game.Core
             _board[localPosition.row, localPosition.col] = piece;
         }
 
-        public void Move(Piece piece, Position to)
+        public Piece Move(Piece piece, Position to)
         {
             var pieceLocalPosition = GamePositionToLocalPosition(piece.Position);
             var toLocalPosition = GamePositionToLocalPosition(to);
@@ -37,6 +47,8 @@ namespace Game.Core
                 PieceFactory.GetEmptyPiece(piece.Position);
             piece.Move(to, destinationPiece);
             _board[toLocalPosition.row, toLocalPosition.col] = piece;
+
+            return destinationPiece;
         }
 
         public Piece GetPieceIn(Position position)

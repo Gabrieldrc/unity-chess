@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Game.Core;
+using Game.Managers;
 using UnityEngine;
 
 namespace Game.Components
@@ -16,6 +17,9 @@ namespace Game.Components
 
         [SerializeField, Tooltip("It has to have 64 grids")]
         private List<BoardGrid> _grids;
+        
+        [SerializeField]
+        private PieceGraveyardManager _graveyardManager;
 
         private ChessBoard _board;
         private Piece _selectedPiece;
@@ -85,7 +89,8 @@ namespace Game.Components
 
         public void SelectBoardGrid(BoardGrid grid)
         {
-            _board.Move(_selectedPiece, grid.Position);
+            var deadPiece = _board.Move(_selectedPiece, grid.Position);
+            _graveyardManager.AddPieceToGraveyard(deadPiece);
             MovePiece(_selectedPiece, grid);
             _selectedPiece = null;
             DeactiveAllActivedGrids();
