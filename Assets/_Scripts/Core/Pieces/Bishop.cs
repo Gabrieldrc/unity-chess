@@ -58,7 +58,6 @@ namespace Game.Core.Pieces
             var indexCol = from.col + colDirection;
             while (indexRow != to.row && indexRow < board.Rows && indexRow >= 0 && indexCol != to.col && indexCol < board.Columns && indexCol >= 0)
             {
-                Debug.Log($"{indexRow}, {indexCol}");
                 destinationPiece = board.GetPieceIn(new Position(indexRow, indexCol));
                 if (!(destinationPiece is Empty))
                     return false;

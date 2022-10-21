@@ -10,9 +10,10 @@ namespace Game.Core.Pieces
         public override string Sign { get; set; } = "";
         protected override bool CanMove(Position position, ChessBoard board)
         {
-            var itMoveOneStepInCol = Math.Abs(position.col - Position.col) == 1;
-            var itMoveOneStepInRow = Math.Abs(position.row - Position.row) == 1;
-            if (!itMoveOneStepInCol || !itMoveOneStepInRow)
+            var stepInCol = Math.Abs(position.col - Position.col);
+            var stepInRow = Math.Abs(position.row - Position.row);
+            var steps = stepInCol > stepInRow ? stepInCol : stepInRow;
+            if (steps != 1)
             {
                 return false;
             }
