@@ -9,7 +9,7 @@ namespace Game.Core.Pieces
         {
         }
         public override string Sign { get; set; } = "";
-        protected override bool CanMove(Position position, ChessBoard board)
+        public override bool CanMove(Position position, ChessBoard board)
         {
             Piece destinationPiece;
             if (!CanMoveDiagonally(Position, position, board))
@@ -32,7 +32,7 @@ namespace Game.Core.Pieces
             var itMoveInCol = from.col != to.col;
             var itMoveInRow = from.row != to.row;
 
-            if (to.EqualsTo(from))
+            if (to.Equals(from))
             {
                 return false;
             }

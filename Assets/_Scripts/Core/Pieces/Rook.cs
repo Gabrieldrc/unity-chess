@@ -6,7 +6,7 @@ namespace Game.Core.Pieces
         {
         }
         public override string Sign { get; set; } = "";
-        protected override bool CanMove(Position position, ChessBoard board)
+        public override bool CanMove(Position position, ChessBoard board)
         {
             Piece destinationPiece;
             if (!CanMoveHorizontalOrVertical(Position, position, board))

@@ -56,9 +56,24 @@ https://sakkpalota.hu/index.php/en/chess/rules#writing
 https://app.diagrams.net/?src=about#G1poXtjMgPGbnrlz1cBOBbESmlAo43a1ba
 
 # TODO
-Pawn can do EN PASSANT
+## Pawn canmove
+The king method can move mark that can not move also when a pawn enemy move forward.
+That is wrong. I should be allow to move, but the pawn does not has a difference between
+a normal move and a capture movement.
+## Pawn can do EN PASSANT
 if a pawn is taking its right to do the first move with 2 steps AND already a enemy pawn
 was next to the destination point of that pawn. The enemy pawn ONLY in its turn NEXT to
 that movement, could do EN PASSANT where it move diagonally as if the first pawn would
 has move one step, and "eat" it.
 https://www.youtube.com/watch?v=1q7lZilVy04
+## State of Check
+When a player move a piece:
+    the game has to check if the next player is in check.
+        How? check if the piece that was move right before can eat the king of the next player in its next turn.
+if it is,
+# DONE
+## King allow movement
+The king only can move one step but only where:
+ - is empty
+ - is an opponent
+ - is NOT on check

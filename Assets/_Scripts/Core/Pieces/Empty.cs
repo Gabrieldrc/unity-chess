@@ -13,7 +13,7 @@ namespace Game.Core.Pieces
         public override List<Position> GetAllMovePositions(ChessBoard board)
             => new List<Position>();
 
-        protected override bool CanMove(Position position, ChessBoard board)
+        public override bool CanMove(Position position, ChessBoard board)
             => false;
     }
 }

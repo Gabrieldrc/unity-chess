@@ -74,6 +74,6 @@ namespace Game.Core
             return movePositions;
         }
 
-        protected abstract bool CanMove(Position position, ChessBoard board);
+        public abstract bool CanMove(Position position, ChessBoard board);
     }
 }

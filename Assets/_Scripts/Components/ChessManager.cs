@@ -79,7 +79,7 @@ namespace Game.Components
             DeactiveAllActivedGrids();
             foreach (var position in allMovePositions)
             {
-                var grid = _grids.Find(grid => grid.Position.EqualsTo(position));
+                var grid = _grids.Find(grid => grid.Position.Equals(position));
                 if (grid == null)
                     continue;
                 grid.SetActive(true);
