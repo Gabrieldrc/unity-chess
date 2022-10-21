@@ -8,7 +8,7 @@ namespace Game.Core.Pieces
         {
         }
         public override string Sign { get; set; } = "";
-        protected override bool CanMove(Position position, ChessBoard board)
+        public override bool CanMove(Position position, ChessBoard board)
         {
             var stepInCol = Math.Abs(position.col - Position.col);
             var stepInRow = Math.Abs(position.row - Position.row);
@@ -25,6 +25,17 @@ namespace Game.Core.Pieces
                 return false;
             }
 
+            var pieceColor = Color == PieceColor.Black ? PieceColor.White : PieceColor.Black;
+            if (!(board.FindPieceThatCanMoveTo(position, pieceColor) is Empty))
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        private bool GetIfPositiheck(Position position, ChessBoard board)
+        {
             return true;
         }
     }

@@ -12,7 +12,7 @@ namespace Game.Core.Pieces
 
         public override string Sign { get; set; } = "";
 
-        protected override bool CanMove(Position position, ChessBoard board)
+        public override bool CanMove(Position position, ChessBoard board)
         {
             var multiplier = Color == PieceColor.White ? 1 : -1;
             var itMoveOneStepInRow = position.row - Position.row == 1 * multiplier;

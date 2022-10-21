@@ -1,4 +1,6 @@
 ﻿using System;
+using Game.Core.Pieces;
+using UnityEngine;
 
 namespace Game.Core
 {
@@ -55,6 +57,22 @@ namespace Game.Core
         {
             var localPosition = GamePositionToLocalPosition(position);
             return _board[localPosition.row, localPosition.col];
+        }
+
+        public Piece FindPieceThatCanMoveTo(Position position, PieceColor pieceColor)
+        {
+            for (int row = 0; row < _board.GetLength(0); row++)
+            {
+                for (int col = 0; col < _board.GetLength(1); col++)
+                {
+                    var piece = GetPieceIn(new Position(row, col));
+                    if (piece.Color != pieceColor)
+                        continue;
+                    if (piece.CanMove(position, this))
+                        return piece;
+                }
+            }
+            return PieceFactory.GetEmptyPiece(position);
         }
 
         private Position GamePositionToLocalPosition(Position position)

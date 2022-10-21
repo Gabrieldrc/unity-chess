@@ -3,12 +3,10 @@
 namespace Game
 {
     [Serializable]
-    public class Position
+    public struct Position: IEquatable<Position>
     {
         public int col;
         public int row;
-
-        public Position(){}
 
         public Position(int row, int col)
         {
@@ -27,7 +25,7 @@ namespace Game
             return Utils.PositionToBoardPosition(row, col);
         }
 
-        public bool EqualsTo(Position position)
+        public bool Equals(Position position)
         {
             return position.row == row && position.col == col;
         }
