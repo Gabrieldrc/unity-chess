@@ -14,7 +14,7 @@ namespace Game.Core.Pieces
 
         protected override bool CanMove(Position position, ChessBoard board)
         {
-            var multiplier = Color == PieceColor.Black ? 1 : -1;
+            var multiplier = Color == PieceColor.White ? 1 : -1;
             var itMoveOneStepInRow = position.row - Position.row == 1 * multiplier;
             var itMoveTwoStepsInRowInItsFirstMove = position.row - Position.row == 2 * multiplier && _isFirstMove;
             var itStayInSameCol = Position.col == position.col;
