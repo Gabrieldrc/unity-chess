@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 
 namespace Game.Core.Pieces
 {
@@ -31,6 +32,11 @@ namespace Game.Core.Pieces
             var itMoveInCol = from.col != to.col;
             var itMoveInRow = from.row != to.row;
 
+            if (to.EqualsTo(from))
+            {
+                return false;
+            }
+
             if ((!itMoveInCol && itMoveInRow) || (itMoveInCol && !itMoveInRow))
             {
                 return false;
@@ -44,23 +50,21 @@ namespace Game.Core.Pieces
                 return false;
             }
 
-            var rowMultiplier = to.row < from.row ? -1 : 1;
-            var colMultiplier = to.col < from.col ? -1 : 1;
+            var rowDirection = to.row < from.row ? -1 : 1;
+            var colDirection = to.col < from.col ? -1 : 1;
 
             Piece destinationPiece;
-            var indexRow = from.row + (1 * rowMultiplier);
-            while (indexRow != to.row)
+            var indexRow = from.row + rowDirection;
+            var indexCol = from.col + colDirection;
+            while (indexRow != to.row && indexRow < board.Rows && indexRow >= 0 && indexCol != to.col && indexCol < board.Columns && indexCol >= 0)
             {
-                var indexCol = from.col + (1 * colMultiplier);
-                while (indexCol != to.col)
-                {
-                    var piece = board.GetPieceIn(new Position(indexRow, indexCol));
-                    if (!(piece is Empty))
-                        return false;
-                    indexCol += 1 * colMultiplier;
-                }
+                Debug.Log($"{indexRow}, {indexCol}");
+                destinationPiece = board.GetPieceIn(new Position(indexRow, indexCol));
+                if (!(destinationPiece is Empty))
+                    return false;
 
-                indexRow += 1 * rowMultiplier;
+                indexCol += colDirection;
+                indexRow += rowDirection;
             }
 
             return true;

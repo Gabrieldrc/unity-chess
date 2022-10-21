@@ -54,3 +54,11 @@ hasta 60 rounds
 
 https://sakkpalota.hu/index.php/en/chess/rules#writing
 https://app.diagrams.net/?src=about#G1poXtjMgPGbnrlz1cBOBbESmlAo43a1ba
+
+# TODO
+Pawn can do EN PASSANT
+if a pawn is taking its right to do the first move with 2 steps AND already a enemy pawn
+was next to the destination point of that pawn. The enemy pawn ONLY in its turn NEXT to
+that movement, could do EN PASSANT where it move diagonally as if the first pawn would
+has move one step, and "eat" it.
+https://www.youtube.com/watch?v=1q7lZilVy04
