@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace Game.Core.Pieces
 {
     public class Rook : Piece
@@ -63,6 +65,43 @@ namespace Game.Core.Pieces
             }
 
             return true;
+        }
+
+        public override List<Position> GetMiddlePositionsBetweenThisAndTarget(Position position, ChessBoard board)
+        {
+            return GetMiddlePositionsBetweenThisAndTargetHV(this, position, board);
+        }
+        
+        public static List<Position> GetMiddlePositionsBetweenThisAndTargetHV(Piece piece, Position position, ChessBoard board)
+        {
+            var positions = new List<Position>();
+            if (piece.CanMove(position, board))
+            {
+                var movingH = position.row == piece.Position.row;
+                var multiplierRow = 0;
+                var multiplierCol = 0;
+                
+                if (movingH)
+                {
+                    multiplierCol = position.col > piece.Position.col ? 1 : -1;
+                }
+                else
+                {
+                    multiplierRow = position.row > piece.Position.row ? 1 : -1;
+                }
+                
+                var indexPosition = piece.Position;
+                indexPosition.row += multiplierRow;
+                indexPosition.col += multiplierCol;
+                while (!position.Equals(indexPosition))
+                {
+                    if (piece.CanMove(indexPosition, board))
+                        positions.Add(indexPosition);
+                    indexPosition.row += multiplierRow;
+                    indexPosition.col += multiplierCol;
+                }
+            }
+            return positions;
         }
     }
 }

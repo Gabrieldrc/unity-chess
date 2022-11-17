@@ -1,5 +1,6 @@
 ﻿using Game.Components;
 using Game.Managers;
+using UnityEngine;
 
 namespace Game.Core.GameStates
 {
@@ -9,16 +10,23 @@ namespace Game.Core.GameStates
         {
         }
 
-        public override void Enter() { }
+        protected override void SelectPieceState(Piece piece)
+        {
+            selectedPiece = piece;
+            var allMovePositions = piece.GetAllMovePositions(board);
+            chessManager.DeactiveAllActivedGrids();
+            chessManager.ActiveAllGridsInThisPostions(allMovePositions);
+        }
+        public override void Enter() {Debug.Log("Normal"); }
 
         public override void Exit() { }
 
         protected override void UpdateNextState()
         {
             var currentKing = chessManager.Turn == PieceColor.Black ? blackKing : whiteKing;
-            if (lastPiece.CanMove(currentKing.Position, board))
+            if (LastPiece.CanMove(currentKing.Position, board))
             {
-                chessManager.NextState = chessManager.CheckState;
+                chessManager.ChangeState(chessManager.CheckState);
             }
         }
     }

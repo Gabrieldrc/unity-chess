@@ -15,5 +15,8 @@ namespace Game.Core.Pieces
 
         public override bool CanMove(Position position, ChessBoard board)
             => false;
+
+        public override List<Position> GetMiddlePositionsBetweenThisAndTarget(Position position, ChessBoard board)
+            => new List<Position>();
     }
 }

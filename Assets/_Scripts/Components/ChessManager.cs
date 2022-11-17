@@ -57,6 +57,7 @@ namespace Game.Components
 
             NormalState = new NormalState(this, _graveyardManager, _board, _whiteKing, _blackKing);
             CheckState = new CheckState(this, _graveyardManager, _board, _whiteKing, _blackKing);
+            CheckMateState = new CheckMateState(this, _graveyardManager, _board, _whiteKing, _blackKing);
             _currentState = NormalState;
         }
 
@@ -81,7 +82,7 @@ namespace Game.Components
 
         public GameState CheckState { get; private set; }
         public GameState NormalState { get; private set; }
-        public GameState NextState { private get; set; } = null;
+        public GameState CheckMateState { get; set; }
 
         public void SelectPiece(Piece piece)
         {
@@ -142,11 +143,12 @@ namespace Game.Components
             }
         }
 
-        private void ChangeState()
+        public void ChangeState(GameState nextState)
         {
-            if (NextState == null) return;
-            _currentState = NextState;
-            NextState = null;
+            _currentState.Exit();
+            nextState.LastPiece = _currentState.LastPiece;
+            _currentState = nextState;
+            _currentState.Enter();
         }
     }
 }

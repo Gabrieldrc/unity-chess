@@ -9,10 +9,9 @@ namespace Game.Core.GameStates
         protected PieceGraveyardManager graveyardManager;
         protected ChessBoard board;
         protected Piece selectedPiece;
-        protected Piece lastPiece;
+        public Piece LastPiece { get; set; } = null;
         protected Piece whiteKing;
         protected Piece blackKing;
-
         protected GameState(ChessManager chessManager, PieceGraveyardManager graveyardManager, ChessBoard board, Piece whiteKing, Piece blackKing)
         {
             this.chessManager = chessManager;
@@ -36,19 +35,19 @@ namespace Game.Core.GameStates
 
         public virtual void SelectPiece(Piece piece)
         {
-            if (piece.Color != chessManager.Turn) return;
-            selectedPiece = piece;
-            var allMovePositions = piece.GetAllMovePositions(board);
             chessManager.DeactiveAllActivedGrids();
-            chessManager.ActiveAllGridsInThisPostions(allMovePositions);
+            if (piece.Color != chessManager.Turn) return;
+            SelectPieceState(piece);
         }
-        
+
+        protected abstract void SelectPieceState(Piece piece);
+
         public void SelectBoardGrid(BoardGrid grid)
         {
             var deadPiece = board.Move(selectedPiece, grid.Position);
             graveyardManager.AddPieceToGraveyard(deadPiece);
             MovePiece(selectedPiece, grid);
-            lastPiece = selectedPiece;
+            LastPiece = selectedPiece;
             selectedPiece = null;
             chessManager.DeactiveAllActivedGrids();
             chessManager.SwitchTurn();

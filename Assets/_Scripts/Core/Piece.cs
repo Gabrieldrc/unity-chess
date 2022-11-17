@@ -74,6 +74,20 @@ namespace Game.Core
             return movePositions;
         }
 
+        public List<Position> GetAllPosiblePositionsFromList(List<Position> positions, ChessBoard board)
+        {
+            var posiblePositions = new List<Position>();
+            foreach (var position in positions)
+            {
+                if (CanMove(position, board))
+                {
+                    posiblePositions.Add(position);
+                }
+            }
+
+            return posiblePositions;
+        }
         public abstract bool CanMove(Position position, ChessBoard board);
+        public abstract List<Position> GetMiddlePositionsBetweenThisAndTarget(Position position, ChessBoard board);
     }
 }

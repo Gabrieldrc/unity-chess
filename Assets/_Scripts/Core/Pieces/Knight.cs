@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace Game.Core.Pieces
 {
@@ -28,5 +29,8 @@ namespace Game.Core.Pieces
 
             return true;
         }
+
+        public override List<Position> GetMiddlePositionsBetweenThisAndTarget(Position position, ChessBoard board)
+            => new List<Position>();
     }
 }

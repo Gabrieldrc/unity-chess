@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Game.Core.Pieces;
 using UnityEngine;
 
@@ -73,6 +74,23 @@ namespace Game.Core
                 }
             }
             return PieceFactory.GetEmptyPiece(position);
+        }
+
+        public List<Piece> GetAllPiecesByColor(PieceColor color)
+        {
+            var pieces = new List<Piece>();
+            for (int row = 0; row < _board.GetLength(0); row++)
+            {
+                for (int col = 0; col < _board.GetLength(1); col++)
+                {
+                    var piece = GetPieceIn(new Position(row, col));
+                    if (piece.Color != color)
+                        continue;
+                    pieces.Add(piece);
+                }
+            }
+
+            return pieces;
         }
 
         private Position GamePositionToLocalPosition(Position position)

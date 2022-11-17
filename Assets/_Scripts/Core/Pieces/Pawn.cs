@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Game.Core.Pieces
@@ -53,5 +54,8 @@ namespace Game.Core.Pieces
                 _isFirstMove = false;
             }
         }
+
+        public override List<Position> GetMiddlePositionsBetweenThisAndTarget(Position position, ChessBoard board)
+            => new List<Position>();
     }
 }
