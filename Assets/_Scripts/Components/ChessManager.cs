@@ -22,6 +22,9 @@ namespace Game.Components
         
         [SerializeField]
         private PieceGraveyardManager _graveyardManager;
+        
+        [SerializeField]
+        private GameState _initialState;
 
         private ChessBoard _board;
         private Piece _selectedPiece;
@@ -31,6 +34,20 @@ namespace Game.Components
         private Piece _whiteKing;
         private Piece _blackKing;
         private GameState _currentState;
+        public PieceColor Turn { get => _pieceColorTurn; }
+        public ChessBoard Board { get => _board; }
+        public Piece WhiteKing
+        {
+            get => _whiteKing;
+            private set => _whiteKing = value;
+        }
+
+        public Piece BlackKing
+        {
+            get => _blackKing;
+            private set => _blackKing = value;
+        }
+
 
 
         #region Unity
@@ -38,10 +55,10 @@ namespace Game.Components
         private void Start()
         {
             _activedGrids = new List<BoardGrid>();
-            if (_pieces.Count != 32)
-            {
-                Debug.LogError("It has to have 32 pieces");
-            }
+            // if (_pieces.Count != 32)
+            // {
+            //     Debug.LogError("It has to have 32 pieces");
+            // }
 
             if (_grids.Count != 64)
             {
@@ -54,11 +71,7 @@ namespace Game.Components
                 grid.OnSelectEvent += SelectBoardGrid;
                 grid.SetActive(false);
             }
-
-            NormalState = new NormalState(this, _graveyardManager, _board, _whiteKing, _blackKing);
-            CheckState = new CheckState(this, _graveyardManager, _board, _whiteKing, _blackKing);
-            CheckMateState = new CheckMateState(this, _graveyardManager, _board, _whiteKing, _blackKing);
-            _currentState = NormalState;
+            _currentState = _initialState;
         }
 
         private void OnDisable()
@@ -74,15 +87,6 @@ namespace Game.Components
         }
 
         #endregion
-
-        public PieceColor Turn
-        {
-            get => _pieceColorTurn;
-        }
-
-        public GameState CheckState { get; private set; }
-        public GameState NormalState { get; private set; }
-        public GameState CheckMateState { get; set; }
 
         public void SelectPiece(Piece piece)
         {

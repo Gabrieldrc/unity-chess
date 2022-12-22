@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace Game.Core.Pieces
 {
@@ -7,7 +8,7 @@ namespace Game.Core.Pieces
         public Rook(Position position, PieceColor color) : base(position, color)
         {
         }
-        public override string Sign { get; set; } = "";
+        public override string Sign { get; set; } = "ROK";
         public override bool CanMove(Position position, ChessBoard board)
         {
             Piece destinationPiece;
@@ -17,7 +18,6 @@ namespace Game.Core.Pieces
             }
 
             destinationPiece = board.GetPieceIn(position);
-
             if (!(destinationPiece is Empty) && destinationPiece.Color == Color)
             {
                 return false;

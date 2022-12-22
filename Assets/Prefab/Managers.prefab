@@ -241,6 +241,9 @@ GameObject:
   m_Component:
   - component: {fileID: 8305188916613563363}
   - component: {fileID: 8305188916613563356}
+  - component: {fileID: 4355994027382970076}
+  - component: {fileID: 8305629884275763288}
+  - component: {fileID: 9209615378572989142}
   m_Layer: 0
   m_Name: Chess Manager
   m_TagString: Untagged
@@ -374,6 +377,52 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   _graveyardManager: {fileID: 7048209134173350983}
+  _initialState: {fileID: 9209615378572989142}
+--- !u!114 &4355994027382970076
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8305188916613563362}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0cc3b89d163c41ed85822f1eaf7a55d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  chessManager: {fileID: 8305188916613563356}
+  graveyardManager: {fileID: 7048209134173350983}
+  _checkMateState: {fileID: 8305629884275763288}
+  _normalState: {fileID: 9209615378572989142}
+--- !u!114 &8305629884275763288
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8305188916613563362}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6adf8b5b0c5b40fbbe73884e878e71f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  chessManager: {fileID: 8305188916613563356}
+  graveyardManager: {fileID: 7048209134173350983}
+--- !u!114 &9209615378572989142
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8305188916613563362}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1265b3f2ca4d43d091f9b86ed2afa0ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  chessManager: {fileID: 8305188916613563356}
+  graveyardManager: {fileID: 7048209134173350983}
+  _checkState: {fileID: 4355994027382970076}
 --- !u!1 &8305188916758205495
 GameObject:
   m_ObjectHideFlags: 0
@@ -419,9 +468,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a153eabbeafb1ac4ea79525d39372232, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _chessManager: {fileID: 8305188916613563356}
   _highlightMaterial: {fileID: 2100000, guid: cf7468e8ba2d51e41a55b79cb28c6cbb, type: 2}
   _camera: {fileID: 7320914722233867447}
-  _layer:
+  _layerWhite:
+    serializedVersion: 2
+    m_Bits: 384
+  _layerBlack:
     serializedVersion: 2
     m_Bits: 192
 --- !u!114 &8305188916758205489

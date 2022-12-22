@@ -6,14 +6,13 @@ namespace Game.Core.GameStates
 {
     public class NormalState: GameState
     {
-        public NormalState(ChessManager chessManager, PieceGraveyardManager graveyardManager, ChessBoard board, Piece whiteKing, Piece blackKing) : base(chessManager, graveyardManager, board, whiteKing, blackKing)
-        {
-        }
+        [SerializeField]
+        private GameState _checkState;
 
         protected override void SelectPieceState(Piece piece)
         {
             selectedPiece = piece;
-            var allMovePositions = piece.GetAllMovePositions(board);
+            var allMovePositions = piece.GetAllMovePositions(Board);
             chessManager.DeactiveAllActivedGrids();
             chessManager.ActiveAllGridsInThisPostions(allMovePositions);
         }
@@ -23,10 +22,10 @@ namespace Game.Core.GameStates
 
         protected override void UpdateNextState()
         {
-            var currentKing = chessManager.Turn == PieceColor.Black ? blackKing : whiteKing;
-            if (LastPiece.CanMove(currentKing.Position, board))
+            var currentKing = chessManager.Turn == PieceColor.Black ? BlackKing : WhiteKing;
+            if (LastPiece.CanMove(currentKing.Position, Board))
             {
-                chessManager.ChangeState(chessManager.CheckState);
+                chessManager.ChangeState(_checkState);
             }
         }
     }

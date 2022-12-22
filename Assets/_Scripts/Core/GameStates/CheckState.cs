@@ -1,37 +1,31 @@
 ﻿using System.Collections.Generic;
-using Game.Components;
 using Game.Core.Pieces;
-using Game.Managers;
 using UnityEngine;
 
 namespace Game.Core.GameStates
 {
     public class CheckState: GameState
     {
+        [SerializeField]
+        private GameState _checkMateState;
+
+        [SerializeField]
+        private GameState _normalState;
+
         private Dictionary<Piece, List<Position>> _piecePositions = new Dictionary<Piece, List<Position>>();
         private List<Position> _positionsToMove = new List<Position>();
         private List<Piece> _piecesCanMove = new List<Piece>();
 
-        public CheckState(
-            ChessManager chessManager,
-            PieceGraveyardManager graveyardManager,
-            ChessBoard board,
-            Piece whiteKing,
-            Piece blackKing
-            ) : base(chessManager, graveyardManager, board, whiteKing, blackKing)
-        {
-        }
-
         public override void Enter()
         {
             Debug.Log("Check");
-            var king = chessManager.Turn == PieceColor.White ? whiteKing : blackKing;
-            _positionsToMove = LastPiece.GetMiddlePositionsBetweenThisAndTarget(king.Position, board);
+            var king = chessManager.Turn == PieceColor.White ? WhiteKing : BlackKing;
+            _positionsToMove = LastPiece.GetMiddlePositionsBetweenThisAndTarget(king.Position, Board);
             _positionsToMove.Add(LastPiece.Position);
             FindAllPiecesWhoCanMove(king);
             if (_piecePositions.Count == 0)
             {
-                chessManager.ChangeState(chessManager.CheckMateState);
+                chessManager.ChangeState(_checkMateState);
             }
         }
 
@@ -45,6 +39,7 @@ namespace Game.Core.GameStates
             List<Position> positions;
             if (_piecePositions.TryGetValue(piece, out positions))
             {
+                Debug.Log($"{piece.Sign} -> {positions.Count}");
                 selectedPiece = piece;
                 chessManager.ActiveAllGridsInThisPostions(positions);
             }
@@ -52,18 +47,22 @@ namespace Game.Core.GameStates
 
         protected override void UpdateNextState()
         {
-            chessManager.ChangeState(chessManager.NormalState);
+            chessManager.ChangeState(_normalState);
         }
 
         private void FindAllPiecesWhoCanMove(Piece king)
         {
-            var pieces = board.GetAllPiecesByColor(chessManager.Turn);
+            var pieces = Board.GetAllPiecesByColor(chessManager.Turn);
             _piecePositions.Clear();
-            var kingMove = King.GetKingMove(king as King, board);
+            var kingMove = King.GetKingMove(king as King, Board);
             _piecePositions.Add(king, kingMove);
             foreach (var piece in pieces)
             {
-                var positionCanMove = piece.GetAllPosiblePositionsFromList(_positionsToMove, board);
+                if (piece is King)
+                {
+                    continue;
+                }
+                var positionCanMove = piece.GetAllPosiblePositionsFromList(_positionsToMove, Board);
                 if (positionCanMove.Count > 0)
                 {
                     _piecePositions.Add(piece, positionCanMove);

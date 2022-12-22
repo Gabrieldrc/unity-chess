@@ -1,24 +1,58 @@
 ﻿using Game.Components;
 using Game.Managers;
+using UnityEngine;
 
 namespace Game.Core.GameStates
 {
-    public abstract class GameState
+    public abstract class GameState : MonoBehaviour
     {
+        [SerializeField]
         protected ChessManager chessManager;
+        [SerializeField]
         protected PieceGraveyardManager graveyardManager;
-        protected ChessBoard board;
+
         protected Piece selectedPiece;
-        public Piece LastPiece { get; set; } = null;
-        protected Piece whiteKing;
-        protected Piece blackKing;
-        protected GameState(ChessManager chessManager, PieceGraveyardManager graveyardManager, ChessBoard board, Piece whiteKing, Piece blackKing)
+        private ChessBoard _board;
+        private Piece _whiteKing;
+        private Piece _blackKing;
+
+        public Piece WhiteKing
         {
-            this.chessManager = chessManager;
-            this.graveyardManager = graveyardManager;
-            this.board = board;
-            this.whiteKing = whiteKing;
-            this.blackKing = blackKing;
+            get
+            {
+                if (_whiteKing == null)
+                {
+                    _whiteKing = chessManager.WhiteKing;
+                }
+
+                return _whiteKing;
+            }
+        }
+        public Piece BlackKing
+        {
+            get
+            {
+                if (_blackKing == null)
+                {
+                    _blackKing = chessManager.BlackKing;
+                }
+
+                return _blackKing;
+            }
+        }
+        public Piece LastPiece { get; set; } = null;
+
+        public ChessBoard Board
+        {
+            get
+            {
+                if (_board == null)
+                {
+                    _board = chessManager.Board;
+                }
+
+                return _board;
+            }
         }
 
         public abstract void Enter();
@@ -44,7 +78,7 @@ namespace Game.Core.GameStates
 
         public void SelectBoardGrid(BoardGrid grid)
         {
-            var deadPiece = board.Move(selectedPiece, grid.Position);
+            var deadPiece = _board.Move(selectedPiece, grid.Position);
             graveyardManager.AddPieceToGraveyard(deadPiece);
             MovePiece(selectedPiece, grid);
             LastPiece = selectedPiece;

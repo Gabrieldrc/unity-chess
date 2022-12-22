@@ -11,7 +11,7 @@ namespace Game.Core.Pieces
         {
         }
 
-        public override string Sign { get; set; } = "";
+        public override string Sign { get; set; } = "PWN";
 
         public override bool CanMove(Position position, ChessBoard board)
         {
