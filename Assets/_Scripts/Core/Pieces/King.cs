@@ -41,14 +41,20 @@ namespace Game.Core.Pieces
         {
             var positions = new List<Position>();
             var kingPosition = king.Position;
-            for (int row = kingPosition.row - 1; row < kingPosition.row + 2; row++)
+            var row = Math.Clamp(kingPosition.row - 1, 0, board.Rows - 1);
+            var maxRow = Math.Clamp(kingPosition.row + 1, 0, board.Rows - 1);
+            while (row <= maxRow)
             {
-                for (int col = kingPosition.col - 1; col < kingPosition.col + 2; col++)
+                var col = Math.Clamp(kingPosition.col - 1, 0, board.Columns - 1);
+                var maxCol = Math.Clamp(kingPosition.row + 1, 0, board.Rows - 1);
+                while (col <= maxCol)
                 {
                     var position = new Position(row, col);
                     if (king.CanMove(position, board))
                         positions.Add(new Position(position));
+                    col++;
                 }
+                row++;
             }
 
             return positions;
