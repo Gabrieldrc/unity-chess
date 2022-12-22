@@ -66,11 +66,20 @@ was next to the destination point of that pawn. The enemy pawn ONLY in its turn 
 that movement, could do EN PASSANT where it move diagonally as if the first pawn would
 has move one step, and "eat" it.
 https://www.youtube.com/watch?v=1q7lZilVy04
-## State of Check
+## Normal to State of Check
 When a player move a piece:
     the game has to check if the next player is in check.
         How? check if the piece that was move right before can eat the king of the next player in its next turn.
 if it is,
+    Change to CheckState
+else
+    continue
+
+## State of Check
+
+I can select ONLY a piece who can
+    - eat the piece who put the king in check
+    - si alguna de las posiciones a donde se puede mover hace que en el proximo turno se quite el check
 # DONE
 ## King allow movement
 The king only can move one step but only where:

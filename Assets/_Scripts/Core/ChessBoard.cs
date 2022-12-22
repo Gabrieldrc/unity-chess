@@ -1,12 +1,23 @@
 ﻿using System;
-using Game.Core.Pieces;
-using UnityEngine;
+using System.Collections.Generic;
 
 namespace Game.Core
 {
-    public class ChessBoard
+    public class ChessBoard : ICloneable
     {
         private Piece[,] _board;
+
+        public Piece[,] Board
+        {
+            get
+            {
+                return _board.Clone() as Piece[,];
+            }
+            private set
+            {
+                _board = value;
+            }
+        }
 
         public ChessBoard()
         {
@@ -59,39 +70,63 @@ namespace Game.Core
             return _board[localPosition.row, localPosition.col];
         }
 
-        public Piece FindPieceThatCanMoveTo(Position position, PieceColor pieceColor)
+        public static Piece FindPieceThatCanMoveTo(ChessBoard board, Position position, PieceColor pieceColor)
         {
-            for (int row = 0; row < _board.GetLength(0); row++)
+            for (int row = 0; row < board.Rows; row++)
             {
-                for (int col = 0; col < _board.GetLength(1); col++)
+                for (int col = 0; col < board.Columns; col++)
                 {
-                    var piece = GetPieceIn(new Position(row, col));
+                    var piece = board.GetPieceIn(new Position(row, col));
                     if (piece.Color != pieceColor)
                         continue;
-                    if (piece.CanMove(position, this))
+                    if (piece.CanMove(position, board))
                         return piece;
                 }
             }
             return PieceFactory.GetEmptyPiece(position);
         }
 
-        private Position GamePositionToLocalPosition(Position position)
+        public List<Piece> GetAllPiecesByColor(PieceColor color)
+        {
+            var pieces = new List<Piece>();
+            for (int row = 0; row < _board.GetLength(0); row++)
+            {
+                for (int col = 0; col < _board.GetLength(1); col++)
+                {
+                    var piece = GetPieceIn(new Position(row, col));
+                    if (piece.Color != color)
+                        continue;
+                    pieces.Add(piece);
+                }
+            }
+
+            return pieces;
+        }
+
+        private static Position GamePositionToLocalPosition(Position position)
         {
             return ChangeTypeOfPosition(position);
         }
 
-        private Position LocalPositionToGamePosition(Position position)
+        private static Position LocalPositionToGamePosition(Position position)
         {
             return ChangeTypeOfPosition(position);
         }
         
-        private Position ChangeTypeOfPosition(Position position)
+        private static Position ChangeTypeOfPosition(Position position)
         {
             var newPosition = new Position();
             newPosition.col = position.col;
             newPosition.row = Math.Abs(position.row - 7);
 
             return newPosition;
+        }
+
+        public object Clone()
+        {
+            var chessBoard = new ChessBoard();
+            chessBoard.Board = Board;
+            return chessBoard;
         }
     }
 }

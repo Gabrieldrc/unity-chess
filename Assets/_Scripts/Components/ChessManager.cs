@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using Game.Core;
+using Game.Core.GameStates;
+using Game.Core.Pieces;
 using Game.Managers;
 using UnityEngine;
 
@@ -20,21 +22,43 @@ namespace Game.Components
         
         [SerializeField]
         private PieceGraveyardManager _graveyardManager;
+        
+        [SerializeField]
+        private GameState _initialState;
 
         private ChessBoard _board;
         private Piece _selectedPiece;
         private List<BoardGrid> _activedGrids;
         private PieceColor _pieceColorTurn = PieceColor.White;
         private Winner _winner = Winner.NoOne;
+        private Piece _whiteKing;
+        private Piece _blackKing;
+        private GameState _currentState;
+        public PieceColor Turn { get => _pieceColorTurn; }
+        public ChessBoard Board { get => _board; }
+        public Piece WhiteKing
+        {
+            get => _whiteKing;
+            private set => _whiteKing = value;
+        }
+
+        public Piece BlackKing
+        {
+            get => _blackKing;
+            private set => _blackKing = value;
+        }
 
 
+
+        #region Unity
+        
         private void Start()
         {
             _activedGrids = new List<BoardGrid>();
-            if (_pieces.Count != 32)
-            {
-                Debug.LogError("It has to have 32 pieces");
-            }
+            // if (_pieces.Count != 32)
+            // {
+            //     Debug.LogError("It has to have 32 pieces");
+            // }
 
             if (_grids.Count != 64)
             {
@@ -47,6 +71,7 @@ namespace Game.Components
                 grid.OnSelectEvent += SelectBoardGrid;
                 grid.SetActive(false);
             }
+            _currentState = _initialState;
         }
 
         private void OnDisable()
@@ -61,74 +86,19 @@ namespace Game.Components
             }
         }
 
-        public PieceColor Turn
-        {
-            get => _pieceColorTurn;
-        }
-        
-        public Winner Winner
-        {
-            get => _winner;
-        }
+        #endregion
 
         public void SelectPiece(Piece piece)
         {
-            if (piece.Color != Turn) return;
-            _selectedPiece = piece;
-            var allMovePositions = piece.GetAllMovePositions(_board);
-            DeactiveAllActivedGrids();
-            foreach (var position in allMovePositions)
-            {
-                var grid = _grids.Find(grid => grid.Position.Equals(position));
-                if (grid == null)
-                    continue;
-                grid.SetActive(true);
-                _activedGrids.Add(grid);
-            }
+            _currentState.SelectPiece(piece);
         }
 
         public void SelectBoardGrid(BoardGrid grid)
         {
-            var deadPiece = _board.Move(_selectedPiece, grid.Position);
-            _graveyardManager.AddPieceToGraveyard(deadPiece);
-            MovePiece(_selectedPiece, grid);
-            _selectedPiece = null;
-            DeactiveAllActivedGrids();
-            SwitchTurn();
+            _currentState.SelectBoardGrid(grid);
         }
 
-        public void GameOver()
-        {
-            
-        }
-
-        public bool IsDraw()
-        {
-            return false;
-        }
-
-        private void MovePiece(Piece piece, BoardGrid grid)
-        {
-            var containerTransform = piece.Container.transform;
-            var containerPosition = containerTransform.position;
-            var gridPosition = grid.transform.position;
-            containerPosition.x = gridPosition.x;
-            containerPosition.z = gridPosition.z;
-            containerTransform.position = containerPosition;
-        }
-        
-        private void BuildBoard()
-        {
-            _board = new ChessBoard();
-            foreach (var pieceContainer in _pieces)
-            {
-                pieceContainer.OnSelectEvent += SelectPiece;
-                var piece = pieceContainer.Piece;
-                _board.AddPiece(piece);
-            }
-        }
-
-        private void DeactiveAllActivedGrids()
+        public void DeactiveAllActivedGrids()
         {
             foreach (var grid in _activedGrids)
             {
@@ -138,9 +108,51 @@ namespace Game.Components
             _activedGrids.Clear();
         }
 
-        private void SwitchTurn()
+        public void SwitchTurn()
         {
             _pieceColorTurn = _pieceColorTurn == PieceColor.Black ? PieceColor.White : PieceColor.Black;
+        }
+
+        public void ActiveAllGridsInThisPostions(List<Position> positions)
+        {
+            foreach (var position in positions)
+            {
+                var grid = _grids.Find(grid => grid.Position.Equals(position));
+                if (grid == null)
+                    continue;
+                grid.SetActive(true);
+                _activedGrids.Add(grid);
+            }
+        }
+
+        private void BuildBoard()
+        {
+            _board = new ChessBoard();
+            foreach (var pieceContainer in _pieces)
+            {
+                pieceContainer.OnSelectEvent += SelectPiece;
+                var piece = pieceContainer.Piece;
+                _board.AddPiece(piece);
+                if (piece is King)
+                {
+                    if (piece.Color == PieceColor.White)
+                    {
+                        _whiteKing = piece;
+                    }
+                    else if (piece.Color == PieceColor.Black)
+                    {
+                        _blackKing = piece;
+                    }
+                }
+            }
+        }
+
+        public void ChangeState(GameState nextState)
+        {
+            _currentState.Exit();
+            nextState.LastPiece = _currentState.LastPiece;
+            _currentState = nextState;
+            _currentState.Enter();
         }
     }
 }

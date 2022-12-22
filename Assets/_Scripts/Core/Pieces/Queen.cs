@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace Game.Core.Pieces
 {
     public class Queen : Piece
@@ -5,7 +7,7 @@ namespace Game.Core.Pieces
         public Queen(Position position, PieceColor color) : base(position, color)
         {
         }
-        public override string Sign { get; set; } = "";
+        public override string Sign { get; set; } = "QEN";
         public override bool CanMove(Position position, ChessBoard board)
         {
             if (Rook.CanMoveHorizontalOrVertical(Position, position, board))
@@ -35,6 +37,14 @@ namespace Game.Core.Pieces
             }
 
             return false;
+        }
+
+        public override List<Position> GetMiddlePositionsBetweenThisAndTarget(Position position, ChessBoard board)
+        {
+            var positions = Bishop.GetMiddlePositionsBetweenThisAndTargetDiagonally(this, position, board);
+            if (positions.Count == 0)
+                positions = Rook.GetMiddlePositionsBetweenThisAndTargetHV(this, position, board);
+            return positions;
         }
     }
 }

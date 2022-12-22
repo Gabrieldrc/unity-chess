@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace Game.Core.Pieces
 {
@@ -7,7 +8,7 @@ namespace Game.Core.Pieces
         public Knight(Position position, PieceColor color) : base(position, color)
         {
         }
-        public override string Sign { get; set; } = "";
+        public override string Sign { get; set; } = "KNG";
         public override bool CanMove(Position position, ChessBoard board)
         {
             var stepsInRow = Math.Abs(position.row - Position.row);
@@ -28,5 +29,8 @@ namespace Game.Core.Pieces
 
             return true;
         }
+
+        public override List<Position> GetMiddlePositionsBetweenThisAndTarget(Position position, ChessBoard board)
+            => new List<Position>();
     }
 }
