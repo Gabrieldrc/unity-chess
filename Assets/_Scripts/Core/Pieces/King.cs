@@ -8,7 +8,7 @@ namespace Game.Core.Pieces
         public King(Position position, PieceColor color) : base(position, color)
         {
         }
-        public override string Sign { get; set; } = "KNG";
+        public override string Sign { get; set; } = "K";
         public override bool CanMove(Position position, ChessBoard board)
         {
             var stepInCol = Math.Abs(position.col - Position.col);

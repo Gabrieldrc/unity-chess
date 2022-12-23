@@ -1,6 +1,4 @@
-﻿using Game.Components;
-using Game.Managers;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Game.Core.GameStates
 {
@@ -9,6 +7,7 @@ namespace Game.Core.GameStates
         public override void Enter()
         {
             Debug.Log("Check Mate");
+            var winner = chessManager.Turn == PieceColor.Black ? PieceColor.White : PieceColor.Black;
         }
 
         public override void Exit()
