@@ -7,7 +7,7 @@ namespace Game.Core.Pieces
         public Queen(Position position, PieceColor color) : base(position, color)
         {
         }
-        public override string Sign { get; set; } = "QEN";
+        public override string Sign { get; set; } = "Q";
         public override bool CanMove(Position position, ChessBoard board)
         {
             if (Rook.CanMoveHorizontalOrVertical(Position, position, board))

@@ -111,6 +111,7 @@ namespace Game.Components
         public void SwitchTurn()
         {
             _pieceColorTurn = _pieceColorTurn == PieceColor.Black ? PieceColor.White : PieceColor.Black;
+            OnTurnChangeEvent?.Invoke(_pieceColorTurn);
         }
 
         public void ActiveAllGridsInThisPostions(List<Position> positions)

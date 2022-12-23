@@ -1,4 +1,5 @@
-﻿using Game.Components;
+﻿using Game._Scripts.Core.Notations;
+using Game.Components;
 using Game.Managers;
 using UnityEngine;
 
@@ -8,8 +9,12 @@ namespace Game.Core.GameStates
     {
         [SerializeField]
         protected ChessManager chessManager;
+
         [SerializeField]
         protected PieceGraveyardManager graveyardManager;
+
+        [SerializeField]
+        protected NotationManager _notationManager;
 
         protected Piece selectedPiece;
         private ChessBoard _board;
@@ -79,6 +84,7 @@ namespace Game.Core.GameStates
         public void SelectBoardGrid(BoardGrid grid)
         {
             var deadPiece = _board.Move(selectedPiece, grid.Position);
+            AddNotation(grid, deadPiece);
             graveyardManager.AddPieceToGraveyard(deadPiece);
             MovePiece(selectedPiece, grid);
             LastPiece = selectedPiece;
@@ -86,6 +92,25 @@ namespace Game.Core.GameStates
             chessManager.DeactiveAllActivedGrids();
             chessManager.SwitchTurn();
             UpdateNextState();
+        }
+
+        private void AddNotation(BoardGrid grid, Piece deadPiece)
+        {
+            var newNotation = new Notation(
+                Board,
+                chessManager.Turn,
+                LastPiece,
+                new PieceData(
+                    selectedPiece,
+                    selectedPiece.Container.transform.position,
+                    grid.transform.position,
+                    selectedPiece.Position,
+                    grid.Position
+                ),
+                deadPiece,
+                this
+            );
+            _notationManager.AddNotation(newNotation);
         }
 
         protected abstract void UpdateNextState();

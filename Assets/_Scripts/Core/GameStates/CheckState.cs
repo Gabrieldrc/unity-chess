@@ -55,7 +55,10 @@ namespace Game.Core.GameStates
             var pieces = Board.GetAllPiecesByColor(chessManager.Turn);
             _piecePositions.Clear();
             var kingMove = King.GetKingMove(king as King, Board);
-            _piecePositions.Add(king, kingMove);
+            if (kingMove.Count > 0)
+            {
+                _piecePositions.Add(king, kingMove);
+            }
             foreach (var piece in pieces)
             {
                 if (piece is King)

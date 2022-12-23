@@ -9,7 +9,7 @@ namespace Game.Core.Pieces
         public Bishop(Position position, PieceColor color) : base(position, color)
         {
         }
-        public override string Sign { get; set; } = "BSH";
+        public override string Sign { get; set; } = "B";
         public override bool CanMove(Position position, ChessBoard board)
         {
             Piece destinationPiece;
