@@ -47,7 +47,7 @@ namespace Game.Core.GameStates
 
         protected override void UpdateNextState()
         {
-            chessManager.ChangeState(_normalState);
+            _nextState = _normalState;
         }
 
         private void FindAllPiecesWhoCanMove(Piece king)

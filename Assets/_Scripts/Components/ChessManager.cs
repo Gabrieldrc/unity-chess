@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Game._Scripts.Core.Notations;
 using Game.Core;
 using Game.Core.GameStates;
 using Game.Core.Pieces;
@@ -34,6 +35,7 @@ namespace Game.Components
         private Piece _whiteKing;
         private Piece _blackKing;
         private GameState _currentState;
+        [SerializeField] private HistoryManager _historyManager;
         public PieceColor Turn { get => _pieceColorTurn; }
         public ChessBoard Board { get => _board; }
         public Piece WhiteKing
@@ -72,6 +74,15 @@ namespace Game.Components
                 grid.SetActive(false);
             }
             _currentState = _initialState;
+            var checkpoint = new Checkpoint(
+                Board,
+                Turn,
+                null,
+                null,
+                null,
+                _currentState
+            );
+            _historyManager.AddCheckpoint(checkpoint);
         }
 
         private void OnDisable()
@@ -153,6 +164,16 @@ namespace Game.Components
             _currentState.Exit();
             nextState.LastPiece = _currentState.LastPiece;
             _currentState = nextState;
+            _currentState.Enter();
+        }
+
+        public void SetGameState(Checkpoint lastCheckpoint)
+        {
+            _currentState.Exit();
+            _board = lastCheckpoint.Board;
+            _pieceColorTurn = lastCheckpoint.Turn;
+            _currentState = lastCheckpoint.CurrentState;
+            _currentState.LastPiece = lastCheckpoint.LastPiece;
             _currentState.Enter();
         }
     }

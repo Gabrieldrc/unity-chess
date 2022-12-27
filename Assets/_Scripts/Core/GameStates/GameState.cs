@@ -14,12 +14,13 @@ namespace Game.Core.GameStates
         protected PieceGraveyardManager graveyardManager;
 
         [SerializeField]
-        protected NotationManager _notationManager;
+        protected HistoryManager historyManager;
 
         protected Piece selectedPiece;
         private ChessBoard _board;
         private Piece _whiteKing;
         private Piece _blackKing;
+        protected GameState _nextState;
 
         public Piece WhiteKing
         {
@@ -84,19 +85,26 @@ namespace Game.Core.GameStates
         public void SelectBoardGrid(BoardGrid grid)
         {
             var deadPiece = _board.Move(selectedPiece, grid.Position);
-            AddNotation(grid, deadPiece);
             graveyardManager.AddPieceToGraveyard(deadPiece);
             MovePiece(selectedPiece, grid);
-            LastPiece = selectedPiece;
-            selectedPiece = null;
             chessManager.DeactiveAllActivedGrids();
             chessManager.SwitchTurn();
             UpdateNextState();
+            AddCheckpoint(grid, deadPiece);
+            LastPiece = selectedPiece;
+            selectedPiece = null;
+            ChangeToNextState();
         }
 
-        private void AddNotation(BoardGrid grid, Piece deadPiece)
+        private void ChangeToNextState()
         {
-            var newNotation = new Notation(
+            if (_nextState == null || _nextState == this) return;
+            chessManager.ChangeState(_nextState);
+        }
+
+        private void AddCheckpoint(BoardGrid grid, Piece deadPiece)
+        {
+            var newNotation = new Checkpoint(
                 Board,
                 chessManager.Turn,
                 LastPiece,
@@ -108,9 +116,9 @@ namespace Game.Core.GameStates
                     grid.Position
                 ),
                 deadPiece,
-                this
+                _nextState
             );
-            _notationManager.AddNotation(newNotation);
+            historyManager.AddCheckpoint(newNotation);
         }
 
         protected abstract void UpdateNextState();
