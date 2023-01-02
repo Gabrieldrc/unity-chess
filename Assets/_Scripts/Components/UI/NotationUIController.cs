@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Game._Scripts.Core.Notations;
+using Game.Core.GameStates;
 using Game.Core.Pieces;
 using Game.Managers;
 using UnityEngine;
@@ -11,7 +12,7 @@ namespace Game.Components.UI
         [SerializeField] private HistoryManager historyManager;
         [SerializeField] private ObjectPooler _notationUISinglePooler;
         [SerializeField] private List<GameObject> _notations = new List<GameObject>();
-        [SerializeField] private List<NotationData> _notationsData = new List<NotationData>();
+        private List<NotationData> _notationsData = new List<NotationData>();
 
         private void OnEnable()
         {
@@ -42,10 +43,13 @@ namespace Game.Components.UI
                     //TODO jugo white
                     notationData = new NotationData();
                     notationData.moved = moveCounter;
-                    notationData.whiteMove = 
+                    notationData.whiteMove =
                         checkpoint.MovedPiece.Piece.Sign
                         + (checkpoint.DeadPiece is Empty ? "" : "x")
-                        + checkpoint.MovedPiece.ToPosition.ToString();
+                        + checkpoint.MovedPiece.ToPosition.ToString()
+                        + SetStateSign(checkpoint);
+                    _notationsData.Add(notationData);
+                    
                     continue;
                 }
                 else
@@ -54,8 +58,9 @@ namespace Game.Components.UI
                     notationData.blackMove =
                         checkpoint.MovedPiece.Piece.Sign
                         + (checkpoint.DeadPiece is Empty ? "" : "x")
-                        + checkpoint.MovedPiece.ToPosition.ToString();
-                    _notationsData.Add(notationData);
+                        + checkpoint.MovedPiece.ToPosition.ToString()
+                        + SetStateSign(checkpoint);
+                    _notationsData[_notationsData.Count - 1] = notationData;
                     moveCounter++;
                 }
             }
@@ -70,6 +75,21 @@ namespace Game.Components.UI
                         data.moved, data.whiteMove + " " + data.blackMove
                         );
             }
+        }
+
+        private string SetStateSign(Checkpoint checkpoint)
+        {
+            var sign = "";
+            if (checkpoint.CurrentState is CheckState)
+            {
+                sign = "+";
+            }
+            else if (checkpoint.CurrentState is CheckMateState)
+            {
+                sign = "#" ;
+                sign += (checkpoint.MovedPiece.Piece.Color == PieceColor.Black ? "0-1" : "1-0");
+            }
+            return sign;
         }
 
         private void ResetNotations()

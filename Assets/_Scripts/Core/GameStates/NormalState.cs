@@ -25,8 +25,7 @@ namespace Game.Core.GameStates
         protected override void UpdateNextState()
         {
             var currentKing = chessManager.Turn == PieceColor.Black ? BlackKing : WhiteKing;
-            if (LastPiece == null) return;
-            if (LastPiece.CanMove(currentKing.Position, Board))
+            if (selectedPiece.CanMove(currentKing.Position, Board))
             {
                 _nextState = _checkState;
             }

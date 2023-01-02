@@ -99,7 +99,9 @@ namespace Game.Core.GameStates
         private void ChangeToNextState()
         {
             if (_nextState == null || _nextState == this) return;
-            chessManager.ChangeState(_nextState);
+            var next = _nextState;
+            _nextState = null;
+            chessManager.ChangeState(next);
         }
 
         private void AddCheckpoint(BoardGrid grid, Piece deadPiece)

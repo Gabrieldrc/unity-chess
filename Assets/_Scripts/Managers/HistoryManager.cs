@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Game._Scripts.Core.Notations;
 using Game.Components;
+using Game.Core.GameStates;
 using UnityEngine;
 
 namespace Game.Managers
@@ -41,6 +42,20 @@ namespace Game.Managers
                 _checkpoints.RemoveRange(_checkpointIndex, _checkpoints.Count - _checkpointIndex);
             }
             _checkpoints.Add(checkpoint);
+            Notify();
+        }
+
+        public void SetLastCheckpointCheckToMate(CheckMateState mateState)
+        {
+            var checkpoint = _checkpoints[_checkpoints.Count - 1];
+            _checkpoints[_checkpoints.Count - 1] = new Checkpoint(
+                checkpoint.Board,
+                checkpoint.Turn,
+                checkpoint.LastPiece,
+                checkpoint.MovedPiece,
+                checkpoint.DeadPiece,
+                mateState
+                );
             Notify();
         }
         
@@ -89,12 +104,6 @@ namespace Game.Managers
 
         void Notify()
         {
-            List<string> notationsString = new List<string>();
-            foreach (var notation in _checkpoints)
-            {
-                notationsString.Add(notation.ToString());
-            }
-
             OnHistoryUpdate?.Invoke();
         }
     }
