@@ -1,6 +1,4 @@
-﻿using Game.Components;
-using Game.Managers;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Game.Core.GameStates
 {
@@ -16,16 +14,20 @@ namespace Game.Core.GameStates
             chessManager.DeactiveAllActivedGrids();
             chessManager.ActiveAllGridsInThisPostions(allMovePositions);
         }
-        public override void Enter() {Debug.Log("Normal"); }
+
+        public override void Enter()
+        {
+            Debug.Log("Normal");
+        }
 
         public override void Exit() { }
 
         protected override void UpdateNextState()
         {
             var currentKing = chessManager.Turn == PieceColor.Black ? BlackKing : WhiteKing;
-            if (LastPiece.CanMove(currentKing.Position, Board))
+            if (selectedPiece.CanMove(currentKing.Position, Board))
             {
-                chessManager.ChangeState(_checkState);
+                _nextState = _checkState;
             }
         }
     }

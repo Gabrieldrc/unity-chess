@@ -1,11 +1,12 @@
-﻿using Game.Core;
+﻿using System;
+using Game.Core;
 using Game.Core.GameStates;
 using Game.Core.Pieces;
 using UnityEngine;
 
 namespace Game._Scripts.Core.Notations
 {
-    public class Notation
+    public class Checkpoint : ICloneable
     {
         private readonly ChessBoard _board;
         private readonly PieceColor _turn;
@@ -14,7 +15,7 @@ namespace Game._Scripts.Core.Notations
         private readonly Piece _deadPiece;
         private readonly GameState _currentState;
 
-        public Notation(
+        public Checkpoint(
             ChessBoard board,
             PieceColor turn,
             Piece lastPiece,
@@ -61,14 +62,18 @@ namespace Game._Scripts.Core.Notations
             get => _currentState;
         }
 
-        public override string ToString()
+        // public override string ToString()
+        // {
+        //     var pieceMoved = _movedPiece.Piece.Sign;
+        //     var from = _movedPiece.FromPosition.ToString().ToLower();
+        //     var to = _movedPiece.ToPosition.ToString().ToLower();
+        //     var deadPiece = _deadPiece.Sign;
+        //     var itCapture = _deadPiece is Empty ? "" : "x";
+        //     return pieceMoved + itCapture + from + " " + deadPiece + itCapture + to;
+        // }
+        public object Clone()
         {
-            var pieceMoved = _movedPiece.Piece.Sign;
-            var from = _movedPiece.FromPosition.ToString();
-            var to = _movedPiece.ToPosition.ToString();
-            var deadPiece = _deadPiece.Sign;
-            var itCapture = _deadPiece is Empty ? "" : "x";
-            return pieceMoved + itCapture + from + " " + deadPiece + itCapture + to;
+            return new Checkpoint(Board, Turn, LastPiece, MovedPiece, DeadPiece, CurrentState);
         }
     }
 

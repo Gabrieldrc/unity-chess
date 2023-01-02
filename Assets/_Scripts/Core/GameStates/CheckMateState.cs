@@ -8,6 +8,7 @@ namespace Game.Core.GameStates
         {
             Debug.Log("Check Mate");
             var winner = chessManager.Turn == PieceColor.Black ? PieceColor.White : PieceColor.Black;
+            historyManager.SetLastCheckpointCheckToMate(this);
         }
 
         public override void Exit()
