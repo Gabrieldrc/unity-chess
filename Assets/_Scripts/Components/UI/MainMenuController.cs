@@ -4,7 +4,7 @@ using UnityEditor;
 using UnityEngine;
 #endif
 
-namespace Game
+namespace Game.Components.UI
 {
     public class MainMenuController : MonoBehaviour
     {

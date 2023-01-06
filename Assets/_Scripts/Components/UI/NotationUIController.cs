@@ -24,6 +24,11 @@ namespace Game.Components.UI
             historyManager.Unsubscribe(NotationHandler);
         }
 
+        public void UpdateNotations()
+        {
+            NotationHandler();
+        }
+
         private void NotationHandler()
         {
             //TODO index arrow
