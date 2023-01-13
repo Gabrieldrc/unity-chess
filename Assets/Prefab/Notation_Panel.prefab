@@ -93,6 +93,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _noText: {fileID: 5576463971736786329}
   _movementText: {fileID: 520832629309791803}
+  _primaryColor: {r: 0.12941177, g: 0.227451, b: 0.32941177, a: 1}
+  _secundaryColor: {r: 1, g: 1, b: 1, a: 1}
+  _bgImage: {fileID: 7094088093261175044}
 --- !u!1 &7385088476094940464
 GameObject:
   m_ObjectHideFlags: 0

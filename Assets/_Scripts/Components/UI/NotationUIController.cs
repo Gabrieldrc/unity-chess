@@ -70,15 +70,21 @@ namespace Game.Components.UI
                 }
             }
 
-            foreach (var data in _notationsData)
+            for (int i = 0; i < _notationsData.Count; i++)
             {
+                var data = _notationsData[i];
                 var notationGO = _notationUISinglePooler.GetPooledObject();
                 _notations.Add(notationGO);
                 notationGO.SetActive(true);
-                notationGO.GetComponent<NotationUISingle>()
-                    ?.SetNotationText(
-                        data.moved, data.whiteMove + " " + data.blackMove
-                        );
+                var notationUISingle = notationGO.GetComponent<NotationUISingle>();
+                if (notationUISingle != null)
+                {
+                    notationUISingle
+                        .SetNotationText(
+                            data.moved, data.whiteMove + " " + data.blackMove
+                            );
+                    notationUISingle.SetColor(i % 2);
+                }
             }
         }
 
